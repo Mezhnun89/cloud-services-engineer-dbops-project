@@ -1,0 +1,46 @@
+Timing is on.
+ order_date | sausages_quantity 
+------------+-------------------
+ 2026-08-24 |           2834157
+ 2026-08-25 |           2845719
+ 2026-08-26 |           2813813
+ 2026-08-27 |           2832011
+ 2026-08-28 |           2826964
+ 2026-08-29 |           2850239
+ 2026-08-30 |           2834944
+(7 rows)
+
+Time: 64875.132 ms (01:04.875)
+                                                                                                                       QUERY PLAN                                                                                                                       
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Sort  (cost=407256.55..407256.77 rows=90 width=12) (actual time=80485.730..80485.734 rows=7 loops=1)
+   Sort Key: o.date_created
+   Sort Method: quicksort  Memory: 25kB
+   Buffers: shared hit=79444 read=89814, temp read=41439 written=41439
+   ->  HashAggregate  (cost=407252.73..407253.63 rows=90 width=12) (actual time=80485.721..80485.725 rows=7 loops=1)
+         Group Key: o.date_created
+         Batches: 1  Memory Usage: 24kB
+         Buffers: shared hit=79444 read=89814, temp read=41439 written=41439
+         ->  Hash Join  (cost=111967.06..403364.44 rows=777657 width=8) (actual time=47198.220..80353.148 rows=777617 loops=1)
+               Hash Cond: (op.order_id = o.id)
+               Buffers: shared hit=79444 read=89814, temp read=41439 written=41439
+               ->  Seq Scan on order_product op  (cost=0.00..163693.71 rows=9999871 width=12) (actual time=5.639..25053.278 rows=10000000 loops=1)
+                     Buffers: shared hit=1 read=63694
+               ->  Hash  (cost=98448.11..98448.11 rows=777676 width=12) (actual time=47189.371..47189.372 rows=777617 loops=1)
+                     Buckets: 262144  Batches: 8  Memory Usage: 6631kB
+                     Buffers: shared hit=79443 read=26120, temp written=2984
+                     ->  Index Only Scan using orders_date_created_id_idx on orders o  (cost=0.45..98448.11 rows=777676 width=12) (actual time=12.517..46944.892 rows=777617 loops=1)
+                           Index Cond: ((date_created >= ((date_trunc('week'::text, ('2026-09-06'::date)::timestamp with time zone))::date - 7)) AND (date_created < (date_trunc('week'::text, ('2026-09-06'::date)::timestamp with time zone))::date))
+                           Heap Fetches: 216027
+                           Buffers: shared hit=79443 read=26120
+ Planning:
+   Buffers: shared hit=5 read=12
+ Planning Time: 85.794 ms
+ JIT:
+   Functions: 15
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 0.609 ms, Inlining 0.000 ms, Optimization 0.233 ms, Emission 5.486 ms, Total 6.329 ms
+ Execution Time: 80486.756 ms
+(28 rows)
+
+Time: 80575.936 ms (01:20.576)

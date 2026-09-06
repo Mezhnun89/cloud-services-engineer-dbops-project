@@ -1,0 +1,24 @@
+Picked up JAVA_TOOL_OPTIONS: -Xmx256m
+A more recent version of Flyway is available. Find out more about Flyway 13.5.0 at https://rd.gt/3rXiSlV
+
+Flyway OSS Edition 10.20.1 by Redgate
+
+See release notes here: https://rd.gt/416ObMi
+Database: jdbc:postgresql://dbops-postgres:5432/store (PostgreSQL 16.15)
+Successfully validated 4 migrations (execution time 00:00.057s)
+Current version of schema "public": 001
+Migrating schema "public" to version "002 - change schema"
+Migrating schema "public" to version "003 - insert data"
++--------+
+| setval |
++--------+
+| 6      |
++--------+
+
++----------+
+| setval   |
++----------+
+| 10000000 |
++----------+
+
+Successfully applied 2 migrations to schema "public", now at version v003 (execution time 03:51.998s)

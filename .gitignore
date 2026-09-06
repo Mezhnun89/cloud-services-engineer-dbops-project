@@ -12,3 +12,5 @@ pgdata/
 init.sql
 dbopstest
 node_modules/
+github_actions_ed25519*
+github-auth.*/

@@ -1,0 +1,33 @@
+=== RUN   TestTask1
+=== RUN   TestTask1/TestDatabase
+=== RUN   TestTask1/TestDatabase/database_is_alive
+=== RUN   TestTask1/TestDatabase/autotests_user_has_access
+=== RUN   TestTask1/TestDatabase/migrations_exists
+=== RUN   TestTask1/TestDatabase/check_if_schema_correct
+--- PASS: TestTask1 (0.27s)
+    --- PASS: TestTask1/TestDatabase (0.27s)
+        --- PASS: TestTask1/TestDatabase/database_is_alive (0.12s)
+        --- PASS: TestTask1/TestDatabase/autotests_user_has_access (0.10s)
+        --- PASS: TestTask1/TestDatabase/migrations_exists (0.04s)
+        --- PASS: TestTask1/TestDatabase/check_if_schema_correct (0.01s)
+=== RUN   TestTask2
+=== RUN   TestTask2/TestDatabaseOptimization
+=== RUN   TestTask2/TestDatabaseOptimization/check_if_migration_change_schema_exists
+=== RUN   TestTask2/TestDatabaseOptimization/check_if_schema_is_optimized
+=== RUN   TestTask2/TestDatabaseOptimization/check_if_migration_insert_data_exists
+=== RUN   TestTask2/TestDatabaseOptimization/check_if_data_exists_in_optimized_tables
+--- PASS: TestTask2 (41.50s)
+    --- PASS: TestTask2/TestDatabaseOptimization (41.50s)
+        --- PASS: TestTask2/TestDatabaseOptimization/check_if_migration_change_schema_exists (0.01s)
+        --- PASS: TestTask2/TestDatabaseOptimization/check_if_schema_is_optimized (0.22s)
+        --- PASS: TestTask2/TestDatabaseOptimization/check_if_migration_insert_data_exists (0.01s)
+        --- PASS: TestTask2/TestDatabaseOptimization/check_if_data_exists_in_optimized_tables (41.26s)
+=== RUN   TestTask3
+=== RUN   TestTask3/TestCheckDatabaseOptimization
+=== RUN   TestTask3/TestCheckDatabaseOptimization/check_if_migration_create_index_exists
+=== RUN   TestTask3/TestCheckDatabaseOptimization/check_if_index_is_correct
+--- PASS: TestTask3 (0.07s)
+    --- PASS: TestTask3/TestCheckDatabaseOptimization (0.07s)
+        --- PASS: TestTask3/TestCheckDatabaseOptimization/check_if_migration_create_index_exists (0.01s)
+        --- PASS: TestTask3/TestCheckDatabaseOptimization/check_if_index_is_correct (0.06s)
+PASS

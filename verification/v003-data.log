@@ -1,0 +1,26 @@
+ version |  description  |  installed_by  | success 
+---------+---------------+----------------+---------
+ 001     | create tables | store_migrator | t
+ 002     | change schema | store_migrator | t
+ 003     | insert data   | store_migrator | t
+(3 rows)
+
+  table_name   |   rows   
+---------------+----------
+ product       |        6
+ orders        | 10000000
+ order_product | 10000000
+(3 rows)
+
+            conname            | convalidated 
+-------------------------------+--------------
+ order_product_order_id_fkey   | t
+ order_product_product_id_fkey | t
+(2 rows)
+
+ database_size 
+---------------
+ 1217 MB
+(1 row)
+
+DO

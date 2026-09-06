@@ -1,0 +1,33 @@
+ installed_rank | version |  description  |  installed_by  | success 
+----------------+---------+---------------+----------------+---------
+              1 | 001     | create tables | store_migrator | t
+(1 row)
+
+       tablename       |   tableowner   
+-----------------------+----------------
+ flyway_schema_history | store_migrator
+ order_product         | store_migrator
+ orders                | store_migrator
+ orders_date           | store_migrator
+ product               | store_migrator
+ product_info          | store_migrator
+(6 rows)
+
+  table_name   | column_name  |     data_type     | is_nullable 
+---------------+--------------+-------------------+-------------
+ order_product | quantity     | integer           | NO
+ order_product | order_id     | bigint            | NO
+ order_product | product_id   | bigint            | NO
+ orders        | id           | bigint            | NO
+ orders        | status       | character varying | YES
+ orders_date   | order_id     | bigint            | NO
+ orders_date   | status       | character varying | YES
+ orders_date   | date_created | date              | YES
+ product       | id           | bigint            | NO
+ product       | name         | character varying | NO
+ product       | picture_url  | character varying | YES
+ product_info  | product_id   | bigint            | NO
+ product_info  | name         | character varying | NO
+ product_info  | price        | double precision  | YES
+(14 rows)
+

@@ -1,0 +1,40 @@
+Unable to find image 'flyway/flyway:10.20.1' locally
+10.20.1: Pulling from flyway/flyway
+470e6b2353a2: Pulling fs layer
+f4d133ca2b7f: Pulling fs layer
+b5bd5bd1971f: Pulling fs layer
+d12988e90d61: Pulling fs layer
+6414378b6477: Pulling fs layer
+17da8ec43a12: Pulling fs layer
+143733ae87a4: Pulling fs layer
+143733ae87a4: Download complete
+f4d133ca2b7f: Download complete
+b5bd5bd1971f: Download complete
+6414378b6477: Download complete
+d12988e90d61: Download complete
+17da8ec43a12: Download complete
+0a6f04adbf96: Download complete
+6414378b6477: Pull complete
+17da8ec43a12: Pull complete
+470e6b2353a2: Download complete
+d12988e90d61: Pull complete
+f4d133ca2b7f: Pull complete
+143733ae87a4: Pull complete
+b5bd5bd1971f: Pull complete
+470e6b2353a2: Pull complete
+Digest: sha256:88dfed741ab3f5604140e8106ad837579e0ff2efe53bf60a78b79ba6a851a658
+Status: Downloaded newer image for flyway/flyway:10.20.1
+Picked up JAVA_TOOL_OPTIONS: -Xmx256m
+WARNING: Storing migrations in 'sql' is not recommended and default scanning of this location may be deprecated in a future release
+A more recent version of Flyway is available. Find out more about Flyway 13.5.0 at https://rd.gt/3rXiSlV
+
+Flyway OSS Edition 10.20.1 by Redgate
+
+See release notes here: https://rd.gt/416ObMi
+Database: jdbc:postgresql://dbops-postgres:5432/store (PostgreSQL 16.15)
+Schema history table "public"."flyway_schema_history" does not exist yet
+Successfully validated 4 migrations (execution time 00:00.028s)
+Creating Schema History table "public"."flyway_schema_history" ...
+Current version of schema "public": << Empty Schema >>
+Migrating schema "public" to version "001 - create tables"
+Successfully applied 1 migration to schema "public", now at version v001 (execution time 00:00.019s)

@@ -1,0 +1,4 @@
+e9db64c491f43ac507da6ef539cab0e3bd99c153eba6cda7bee5ee5b9f959ab1  /home/user/dbops-lab/dbops-project/migrations/V001__create_tables.sql
+43cff5dbba066644f184a56ac34852dea7a78b520985fd3d6e8ae53f9ac1686a  /home/user/dbops-lab/dbops-project/migrations/V002__change_schema.sql
+24339790e1549655080f143b5728b7450da68967898ecac2c9a15823d9c037c8  /home/user/dbops-lab/dbops-project/migrations/V003__insert_data.sql
+503aaa1519631cce75b47e79f4c0cb5756e6ebc044d4638bdc2d163dcb13cdad  /home/user/dbops-lab/dbops-project/migrations/V004__create_index.sql
