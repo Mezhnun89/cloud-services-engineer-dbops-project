@@ -20,7 +20,7 @@
 | TestTask2 | check_if_migration_change_schema_exists; check_if_schema_is_optimized; check_if_migration_insert_data_exists; check_if_data_exists_in_optimized_tables |
 | TestTask3 | check_if_migration_create_index_exists; check_if_index_is_correct |
 
-Время групп: 0.27 с, 41.50 с, 0.07 с соответственно. GitHub Actions пока не запускался.
+Время групп: 0.27 с, 41.50 с, 0.07 с соответственно. GitHub Actions также прошёл успешно; см. [подтверждение](github-actions.md).
 
 ## Совпавший результат запроса
 
