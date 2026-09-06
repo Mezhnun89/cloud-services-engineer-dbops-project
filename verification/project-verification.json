@@ -1,0 +1,195 @@
+{
+  "engine": "PostgreSQL 18.3 (PGlite 0.5.8) on wasm32-unknown-emscripten, compiled by emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.74 (1092ec30a3fb1d46b1782ff1b4db5094d3d06ae5), 32-bit",
+  "scope": "SQL executed directly on PGlite; not a Flyway, Docker, remote VM or course autotest run",
+  "row_count": 100000,
+  "checks": [
+    {
+      "name": "V001 creates all five expected tables",
+      "ok": true,
+      "rows": [
+        {
+          "n": 5
+        }
+      ]
+    },
+    {
+      "name": "V002 rejects nonempty input",
+      "ok": true,
+      "code": "P0001"
+    },
+    {
+      "name": "V002 leaves three application tables",
+      "ok": true,
+      "rows": [
+        {
+          "n": 3
+        }
+      ]
+    },
+    {
+      "name": "Two primary keys and two foreign keys",
+      "ok": true,
+      "rows": [
+        {
+          "contype": "f",
+          "n": 2
+        },
+        {
+          "contype": "n",
+          "n": 6
+        },
+        {
+          "contype": "p",
+          "n": 2
+        }
+      ]
+    },
+    {
+      "name": "Foreign keys restored and validated after V003",
+      "ok": true,
+      "rows": [
+        {
+          "n": 2
+        }
+      ]
+    },
+    {
+      "name": "Seed row counts",
+      "ok": true,
+      "rows": [
+        {
+          "products": 6,
+          "orders": 100000,
+          "lines": 100000
+        }
+      ]
+    },
+    {
+      "name": "No missing referenced rows",
+      "ok": true,
+      "rows": [
+        {
+          "n": 0
+        }
+      ]
+    },
+    {
+      "name": "Identity sequences advanced",
+      "ok": true,
+      "rows": [
+        {
+          "product_next": 7,
+          "order_next": 100001
+        }
+      ]
+    },
+    {
+      "name": "Weekly totals preserved by indexing",
+      "ok": true,
+      "rows": [
+        {
+          "order_date": "2026-08-24T00:00:00.000Z",
+          "sausages_quantity": 28630
+        },
+        {
+          "order_date": "2026-08-25T00:00:00.000Z",
+          "sausages_quantity": 29968
+        },
+        {
+          "order_date": "2026-08-26T00:00:00.000Z",
+          "sausages_quantity": 29607
+        },
+        {
+          "order_date": "2026-08-27T00:00:00.000Z",
+          "sausages_quantity": 29457
+        },
+        {
+          "order_date": "2026-08-28T00:00:00.000Z",
+          "sausages_quantity": 28602
+        },
+        {
+          "order_date": "2026-08-29T00:00:00.000Z",
+          "sausages_quantity": 27562
+        },
+        {
+          "order_date": "2026-08-30T00:00:00.000Z",
+          "sausages_quantity": 29046
+        }
+      ]
+    },
+    {
+      "name": "All three report/support indexes exist",
+      "ok": true,
+      "rows": [
+        {
+          "n": 3
+        }
+      ]
+    },
+    {
+      "name": "Previous complete week boundary",
+      "ok": true,
+      "delta": 5
+    }
+  ],
+  "plans": {
+    "before": [
+      "Sort  (cost=6428.63..6428.86 rows=90 width=12) (actual time=110.463..110.469 rows=7.00 loops=1)",
+      "  Sort Key: o.date_created",
+      "  Sort Method: quicksort  Memory: 17kB",
+      "  Buffers: shared hit=1274",
+      "  ->  HashAggregate  (cost=6424.81..6425.71 rows=90 width=12) (actual time=110.445..110.451 rows=7.00 loops=1)",
+      "        Group Key: o.date_created",
+      "        Batches: 1  Memory Usage: 32kB",
+      "        Buffers: shared hit=1274",
+      "        ->  Hash Join  (cost=4485.79..6385.30 rows=7903 width=8) (actual time=62.789..107.786 rows=7849.00 loops=1)",
+      "              Hash Cond: (op.order_id = o.id)",
+      "              Buffers: shared hit=1274",
+      "              ->  Seq Scan on order_product op  (cost=0.00..1637.00 rows=100000 width=12) (actual time=0.031..18.946 rows=100000.00 loops=1)",
+      "                    Buffers: shared hit=637",
+      "              ->  Hash  (cost=4387.00..4387.00 rows=7903 width=12) (actual time=62.722..62.723 rows=7849.00 loops=1)",
+      "                    Buckets: 8192  Batches: 1  Memory Usage: 339kB",
+      "                    Buffers: shared hit=637",
+      "                    ->  Seq Scan on orders o  (cost=0.00..4387.00 rows=7903 width=12) (actual time=0.025..59.443 rows=7849.00 loops=1)",
+      "                          Filter: ((date_created < (date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date) AND (date_created >= ((date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date - 7)))",
+      "                          Rows Removed by Filter: 92151",
+      "                          Buffers: shared hit=637",
+      "Planning:",
+      "  Buffers: shared hit=6",
+      "Planning Time: 0.341 ms",
+      "Execution Time: 110.571 ms"
+    ],
+    "after": [
+      "Sort  (cost=3174.57..3174.80 rows=90 width=12) (actual time=48.581..48.588 rows=7.00 loops=1)",
+      "  Sort Key: o.date_created",
+      "  Sort Method: quicksort  Memory: 17kB",
+      "  Buffers: shared hit=1307",
+      "  ->  HashAggregate  (cost=3170.75..3171.65 rows=90 width=12) (actual time=48.566..48.574 rows=7.00 loops=1)",
+      "        Group Key: o.date_created",
+      "        Batches: 1  Memory Usage: 32kB",
+      "        Buffers: shared hit=1307",
+      "        ->  Hash Join  (cost=1232.17..3131.68 rows=7813 width=8) (actual time=6.226..46.109 rows=7849.00 loops=1)",
+      "              Hash Cond: (op.order_id = o.id)",
+      "              Buffers: shared hit=1307",
+      "              ->  Seq Scan on order_product op  (cost=0.00..1637.00 rows=100000 width=12) (actual time=0.008..16.517 rows=100000.00 loops=1)",
+      "                    Buffers: shared hit=637",
+      "              ->  Hash  (cost=1134.51..1134.51 rows=7813 width=12) (actual time=6.203..6.205 rows=7849.00 loops=1)",
+      "                    Buckets: 8192  Batches: 1  Memory Usage: 339kB",
+      "                    Buffers: shared hit=670",
+      "                    ->  Bitmap Heap Scan on orders o  (cost=204.52..1134.51 rows=7813 width=12) (actual time=0.541..4.057 rows=7849.00 loops=1)",
+      "                          Recheck Cond: ((date_created >= ((date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date - 7)) AND (date_created < (date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date))",
+      "                          Heap Blocks: exact=637",
+      "                          Buffers: shared hit=670",
+      "                          ->  Bitmap Index Scan on orders_date_created_id_idx  (cost=0.00..202.57 rows=7813 width=0) (actual time=0.444..0.444 rows=7849.00 loops=1)",
+      "                                Index Cond: ((date_created >= ((date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date - 7)) AND (date_created < (date_trunc('week'::text, (CURRENT_DATE)::timestamp with time zone))::date))",
+      "                                Index Searches: 1",
+      "                                Buffers: shared hit=33",
+      "Planning:",
+      "  Buffers: shared hit=14",
+      "Planning Time: 0.277 ms",
+      "Execution Time: 48.638 ms"
+    ]
+  },
+  "before_wall_ms": 71.02166500000021,
+  "after_wall_ms": 18.42059900000004
+}

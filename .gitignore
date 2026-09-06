@@ -1,0 +1,14 @@
+.env
+*.env
+.env.*
+!.env.example
+*.pem
+*.key
+*private_key*
+practicum_dbops_key
+vm-access/
+dbops-runtime/
+pgdata/
+init.sql
+dbopstest
+node_modules/

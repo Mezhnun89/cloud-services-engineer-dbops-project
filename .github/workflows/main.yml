@@ -1,0 +1,73 @@
+name: Main workflow
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Flyway target: 1 = schema, 3 = data/before-index benchmark, 4 = final'
+        required: true
+        default: '4'
+        type: choice
+        options: ['1', '3', '4']
+permissions:
+  contents: read
+concurrency:
+  group: dbops-store-migrations
+  cancel-in-progress: false
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Open SSH tunnel to the training database
+      env:
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+      run: bash scripts/open-ci-tunnel.sh
+
+    - name: Apply Flyway migrations
+      env:
+        FLYWAY_URL: jdbc:postgresql://${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/${{ secrets.DB_NAME }}
+        FLYWAY_USER: ${{ secrets.DB_USER }}
+        FLYWAY_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        FLYWAY_TARGET: ${{ inputs.target || vars.FLYWAY_TARGET || '4' }}
+      run: |
+        set -euo pipefail
+        test -n "$FLYWAY_USER"
+        test -n "$FLYWAY_PASSWORD"
+        docker run --rm --network=host --memory=512m \
+          -e JAVA_TOOL_OPTIONS=-Xmx256m \
+          -e FLYWAY_URL -e FLYWAY_USER -e FLYWAY_PASSWORD -e FLYWAY_TARGET \
+          -v "$GITHUB_WORKSPACE/migrations:/flyway/sql:ro" \
+          flyway/flyway:10.20.1 \
+          -locations=filesystem:/flyway/sql -connectRetries=30 -cleanDisabled=true -validateMigrationNaming=true migrate
+
+    ### Этот шаг оставьте без изменений
+    - name: Download and setup autotests binaries
+      run: |
+        wget -qO- cloud-services-engineer.gitlab.yandexcloud.net/practicum-cloud-services/dbops-autotests/-/package_files/1/download > dbopstest
+        chmod +x ./dbopstest
+        mv ./dbopstest /usr/local/bin/dbopstest
+
+    ### Этот шаг оставьте без изменений
+    - name: Test
+      run: |
+        dbopstest \
+          -test.v \
+          -host=${{ secrets.DB_HOST }} \
+          -port=${{ secrets.DB_PORT }} \
+          -user=${{ secrets.DB_USER }} \
+          -password=${{ secrets.DB_PASSWORD }} \
+          -db=${{ secrets.DB_NAME }}
+
+    - name: Close SSH tunnel
+      if: always()
+      env:
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+      run: bash scripts/close-ci-tunnel.sh
